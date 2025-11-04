@@ -62,6 +62,7 @@ struct SplitToFocusedCommand: Command {
         return true
     }
 
+    @MainActor
     private func findReferenceWindow(for window: Window) -> Window? {
         if let currentFocus = focus.windowOrNil, currentFocus !== window {
             return currentFocus
