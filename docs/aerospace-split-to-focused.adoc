@@ -1,0 +1,43 @@
+= aerospace-split-to-focused(1)
+include::util/man-attributes.adoc[]
+:manname: aerospace-split-to-focused
+// tag::purpose[]
+:manpurpose: Split the focused window and slot another window beside it
+// end::purpose[]
+
+// =========================================================== Synopsis
+== Synopsis
+[verse]
+// tag::synopsis[]
+aerospace split-to-focused [-h|--help] [--window-id <window-id>] (horizontal|vertical|automatic)
+
+// end::synopsis[]
+
+// =========================================================== Description
+== Description
+
+// tag::body[]
+`split-to-focused` creates a tiling container around the currently focused window and moves the target window into that container.
+
+* If the focused window already shares a parent with other windows, the command replaces the focused window with a new container, preserving existing siblings.
+* The orientation of the new container is controlled by the positional argument:
+** `horizontal` – windows are laid out side by side.
+** `vertical` – windows are stacked one above another.
+** `automatic` – orientation is chosen based on the aspect ratio of the focused window (wide windows use horizontal, tall windows use vertical).
+
+By default the target window is the window referenced by `--window-id`, the window id supplied via `AEROSPACE_WINDOW_ID`, or the current focus if nothing is specified. The focused window must be tiling; floating and macOS native fullscreen/minimized/hidden windows are not supported.
+
+This command is particularly useful in the `on-window-detected` callback to automatically pair a newly created window with the window that was focused before the callback ran.
+
+// =========================================================== Options
+include::util/conditional-options-header.adoc[]
+
+-h, --help:: Print help
+
+--window-id <window-id>::
+include::./util/window-id-flag-desc.adoc[]
+
+// end::body[]
+
+// =========================================================== Footer
+include::util/man-footer.adoc[]

@@ -168,6 +168,13 @@ include::aerospace-split.adoc[tags=synopsis]
 include::aerospace-split.adoc[tags=purpose]
 include::aerospace-split.adoc[tags=body]
 
+== split-to-focused
+----
+include::aerospace-split-to-focused.adoc[tags=synopsis]
+----
+include::aerospace-split-to-focused.adoc[tags=purpose]
+include::aerospace-split-to-focused.adoc[tags=body]
+
 == swap
 ----
 include::aerospace-swap.adoc[tags=synopsis]
