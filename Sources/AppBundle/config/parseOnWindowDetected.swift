@@ -112,11 +112,13 @@ private func parseWindowDetectedCallback(_ raw: TOMLValueConvertible, _ backtrac
     // - Commands that change focus are prohibited because the design isn't yet clear
     if !run.allSatisfy({
         let layoutArg = ($0 as? LayoutCommand)?.args.toggleBetween.val.singleOrNil()
-        return layoutArg == .floating || layoutArg == .tiling || $0 is MoveNodeToWorkspaceCommand
+        return layoutArg == .floating || layoutArg == .tiling ||
+            $0 is MoveNodeToWorkspaceCommand ||
+            $0 is SplitToFocusedCommand
     }) {
         myErrors.append(.semantic(
             backtrace,
-            "For now, 'layout floating', 'layout tiling' and 'move-node-to-workspace' are the only commands that are supported in 'on-window-detected'. " +
+            "For now, 'layout floating', 'layout tiling', 'split-to-focused' and 'move-node-to-workspace' are the only commands that are supported in 'on-window-detected'. " +
                 "Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
         ))
     }

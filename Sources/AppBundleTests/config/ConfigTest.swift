@@ -240,13 +240,15 @@ final class ConfigTest: XCTestCase {
                 if.app-id = 'com.apple.systempreferences'
                 run = []
             [[on-window-detected]]
+                run = 'split-to-focused automatic'
+            [[on-window-detected]]
             [[on-window-detected]]
                 run = ['move-node-to-workspace S', 'layout tiling']
             [[on-window-detected]]
                 run = ['move-node-to-workspace S', 'move-node-to-workspace W']
             [[on-window-detected]]
                 run = ['move-node-to-workspace S', 'layout h_tiles']
-            """,
+            """
         )
         assertEquals(parsed.onWindowDetected, [
             WindowDetectedCallback(
@@ -270,16 +272,24 @@ final class ConfigTest: XCTestCase {
                 checkFurtherCallbacks: false,
                 rawRun: [],
             ),
+            WindowDetectedCallback(
+                matcher: WindowDetectedCallbackMatcher(
+                    appId: nil,
+                    appNameRegexSubstring: nil,
+                    windowTitleRegexSubstring: nil,
+                ),
+                checkFurtherCallbacks: false,
+                rawRun: [SplitToFocusedCommand(args: SplitToFocusedCmdArgs(rawArgs: [], orientation: .automatic))],
+            ),
         ])
 
         assertEquals(errors.descriptions, [
-            "on-window-detected[2]: \'run\' is mandatory key",
-            "on-window-detected[3]: For now, \'move-node-to-workspace\' must be the latest instruction in the callback (otherwise it\'s error-prone). Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
-            "on-window-detected[4]: For now, \'move-node-to-workspace\' can be mentioned only once in \'run\' callback. Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
-            "on-window-detected[5]: For now, \'layout floating\', \'layout tiling\' and \'move-node-to-workspace\' are the only commands that are supported in \'on-window-detected\'. Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
-            "on-window-detected[5]: For now, \'move-node-to-workspace\' must be the latest instruction in the callback (otherwise it\'s error-prone). Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
+            "on-window-detected[3]: 'run' is mandatory key",
+            "on-window-detected[4]: For now, 'move-node-to-workspace' must be the latest instruction in the callback (otherwise it's error-prone). Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
+            "on-window-detected[5]: For now, 'move-node-to-workspace' can be mentioned only once in 'run' callback. Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
+            "on-window-detected[6]: For now, 'layout floating', 'layout tiling', 'split-to-focused' and 'move-node-to-workspace' are the only commands that are supported in 'on-window-detected'. Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
+            "on-window-detected[6]: For now, 'move-node-to-workspace' must be the latest instruction in the callback (otherwise it's error-prone). Please report your use cases to https://github.com/nikitabobko/AeroSpace/issues/20",
         ])
-    }
 
     func testParseOnWindowDetectedRegex() {
         let (config, errors) = parseConfig(
